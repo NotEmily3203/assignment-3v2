@@ -1,14 +1,12 @@
 import React from 'react';
-import { Link } from "react-router-dom";
 
 import AccountBalance from './AccountBalance';
 const Home = ({balance}) => {
     return(
         <div>
-            <Link to='/'>Home</Link>
-            <Link to="/login">Login</Link>
-            <Link to="/credits">Credits</Link>
-            <Link to="/debits">Debits</Link>
+            <img src="https://picsum.photos/200/200" alt="bank"/>
+            <h1>Bank of React</h1>
+
             <AccountBalance balance={balance}/>
         </div>
     )

@@ -1,9 +1,11 @@
 import React from 'react';
-const Login = () => {
+const UserProfile = ({userName, memberSince}) => {
     return(
         <div>
-            <p>Login Component</p>
+            <p>User Profile</p>
+            <p>Username : {userName}</p>
+            <p>Member Since : {memberSince}</p>
         </div>
     )
 }
-export default Login;
+export default UserProfile;
