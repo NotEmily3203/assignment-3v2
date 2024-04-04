@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { redirect } from 'react-router-dom'
+import React, {useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom'
 const Login = ({mockLogin}) => {
     const [userDetails, setUserDetails] = useState(
         {   user: {userName: '',
@@ -7,36 +7,47 @@ const Login = ({mockLogin}) => {
             redirect: false}
     );
     const handleChange = (e) => {
-        var currUserName = e.target.value;
-        setUserDetails({user:{userName: currUserName, password: ''}});
+        setUserDetails((prevState) => ({
+            ...prevState,
+            user: {userName: e.target.value,
+                  password: ''},
+        }));
     };
+    const navigate = useNavigate();
+    const handleRedirect = () => {
+        if(userDetails.redirect){
+            navigate('/profile');
+        }
+    }
     const handleSubmit = (e) => {
         e.preventDefault();
+        alert('submitted');
+        setUserDetails((prevState) => ({
+            ...prevState,
+            redirect: true,
+        }));
         mockLogin(userDetails.user);
-        setUserDetails({redirect: true});
     }
+
+    useEffect(() => {
+        console.log(userDetails);
+        handleRedirect();
+    }, [userDetails]);
     return(
         <div>
-            {userDetails.redirect ? 
+            <form onSubmit={handleSubmit}>
                 <div>
-                <p>login successful</p>
+                    <label>User Name</label>
+                    <input type="text" name="userName" onChange={handleChange} />
                 </div>
-            :
                 <div>
-                    <form onSubmit={handleSubmit}>
-                        <div>
-                            <label>User Name</label>
-                            <input type="text" name="userName" onChange={handleChange} />
-                        </div>
-                        <div>
-                            <label>Password</label>
-                            <input type="password" name="password" />
-                        </div>
-                        <button>Log In</button>
-                    </form>
+                    <label>Password</label>
+                    <input type="password" name="password" />
                 </div>
-            }
+                <button>Log In</button>
+            </form>
         </div>
+
     )
 }
 export default Login;
