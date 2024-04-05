@@ -35,9 +35,11 @@ function App() {
         ...prevState,
         creditList: newCredits,
       }));
-      console.log(user);
     }
 
+    useEffect(()=>{
+      console.log(user);
+    },[user])
     
   return (
     <div className="App">
