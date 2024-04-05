@@ -21,7 +21,6 @@ const Login = ({mockLogin}) => {
     }
     const handleSubmit = (e) => {
         e.preventDefault();
-        alert('submitted');
         setUserDetails((prevState) => ({
             ...prevState,
             redirect: true,

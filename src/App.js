@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import {Routes, Route} from 'react-router-dom';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Login from './components/Login';
@@ -22,10 +22,23 @@ function App() {
   );
 
   const mockLogIn = (logInInfo) => {  // Update state's currentUser (userName) after "Log In" button is clicked
-    setUser({currentUser: {userName: logInInfo.userName, memberSince: '11/22/99'}})
+    setUser((prevState) => ({
+      ...prevState,
+      currentUser: {userName: logInInfo.userName, memberSince: '11/22/99'},
+    }));
   }
+    //const [credit, setCredit] = useState([]);
 
+    const updateCredits = (newCredits) => {
+      console.log(newCredits);
+      setUser((prevState) => ({
+        ...prevState,
+        creditList: newCredits,
+      }));
+      console.log(user);
+    }
 
+    
   return (
     <div className="App">
       <Navbar/>
@@ -33,7 +46,7 @@ function App() {
         <Route path="/" element={<Home balance = {user.accountBalance}/>}/>
         <Route path="/login" element={<Login mockLogin={mockLogIn}/>}/>
         <Route path="/profile" element={<UserProfile userName={user.currentUser.userName} memberSince={user.currentUser.memberSince}/>}/>
-        <Route path="/credits" element={<Credits/>}/>
+        <Route path="/credits" element={<Credits updateCredits={updateCredits}/>}/>
         <Route path="/debits" element={<Debits/>}/>
       </Routes>
     </div>
