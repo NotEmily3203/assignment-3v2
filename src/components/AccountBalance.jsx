@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 const AccountBalance = ({balance}) => {
+
     return(
         <div>
             <p>Account Balance : {balance}</p>
