@@ -1,38 +1,18 @@
 import React, {useState, useEffect} from 'react';
-const Debits = ({updateDebits, currentDebits}) => {
-    const [data, setData] = useState(null); // data=null
-    const [error, setError] = useState(null);// eroor=null
+const Debits = ({updateDebits, currentDebits, error}) => {
+    const [data, setData] = useState(currentDebits); // data=null
+    const [newEntry, setNewEntry] = useState(null);// eroor=null
+
+    useEffect(()=>{ //when currentDebits changes, we update data (local value)
+        if (currentDebits) {
+            setData(currentDebits);
+        } else {
+            setData([]);
+        }
+    },[currentDebits]);
 
     const [desc, setDesc]=useState('');
     const [amt, setAmt]=useState(0);
-    useEffect(() => {
-        const yoinkDebits = async () => {
-            try {
-                const response = await fetch('https://johnnylaicode.github.io/api/debits.json'); // call endpoint
-                if (!response.ok) {
-                    throw Error('Connection Failed');
-                }
-                const jsonData = await response.json();
-                setData(jsonData);
-            } catch (error) {
-                setError(error);
-            }
-        };
-        if(!currentDebits){
-            yoinkDebits();
-        }else if(currentDebits.length != 0){
-            setData(currentDebits);
-        }else if(currentDebits.length == 0){
-            yoinkDebits();
-        }
-    }, []);
-
-    
-
-    useEffect(() => {
-        let value = data;
-        updateDebits(value);
-    }, [data]);
     
 
     const handleDescChange = (e) => {
@@ -45,21 +25,27 @@ const Debits = ({updateDebits, currentDebits}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const newEntry = {
+        const entry = {
             id: data.length + 1,
             description: desc,
             amount: amt,
             date: "now",
         };
-        const newData = [...data, newEntry];
-        setData(newData)
+        const newArray = [...data, entry];
+        setNewEntry(newArray)
         //console.log(data);
         setDesc('');
         setAmt('');
         
     }
    
-    
+    useEffect(()=>{ //if new entry, then update data in APP.js
+        //;
+        if(newEntry){
+            updateDebits(newEntry);
+        }
+    },[newEntry]);
+
     if (error) {
         return <div>Error: {error.message}</div>;
     } else if (!data) {
