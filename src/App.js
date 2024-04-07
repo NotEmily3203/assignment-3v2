@@ -104,8 +104,8 @@ function App() {
         <Route path="/" element={<Home balance = {user.accountBalance} credits={user.creditList} debits={user.debitList} updateBalance={updateBalance}/>}/>
         <Route path="/login" element={<Login mockLogin={mockLogIn}/>}/>
         <Route path="/profile" element={<UserProfile userName={user.currentUser.userName} memberSince={user.currentUser.memberSince}/>}/>
-        <Route path="/debits" element={<Debits updateDebits={updateDebits} currentDebits={user.debitList} error={error1}/>}/>
-        <Route path="/credits" element={<Credits updateCredits={updateCredits} currentCredits={user.creditList} error={error}/>}/>
+        <Route path="/debits" element={<Debits updateDebits={updateDebits} credits={user.creditList} currentDebits={user.debitList} error={error1} balance={user.accountBalance} updateBalance={updateBalance}/>}/>
+        <Route path="/credits" element={<Credits updateCredits={updateCredits} currentCredits={user.creditList} debits={user.debitList} error={error} balance={user.accountBalance} updateBalance={updateBalance}/>}/>
       </Routes>
     </div>
   );
