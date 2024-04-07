@@ -46,6 +46,13 @@ function App() {
       }));
     }
 
+    const updateBalance = (newBalance) => {
+      setUser((prevState) => ({
+        ...prevState,
+        accountBalance: newBalance,
+      }));
+    }
+
     useEffect(()=>{
       console.log(user)
     },[user])
@@ -55,7 +62,7 @@ function App() {
     <div className="App">
       <Navbar/>
       <Routes>
-        <Route path="/" element={<Home balance = {user.accountBalance}/>}/>
+        <Route path="/" element={<Home balance = {user.accountBalance} credits={user.creditList} debits={user.debitList} updateBalance={updateBalance}/>}/>
         <Route path="/login" element={<Login mockLogin={mockLogIn}/>}/>
         <Route path="/profile" element={<UserProfile userName={user.currentUser.userName} memberSince={user.currentUser.memberSince}/>}/>
         <Route path="/credits" element={<Credits updateCredits={updateCredits} currentCredits={user.creditList}/>}/>
