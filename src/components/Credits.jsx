@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-const Credits = ({updateCredits}) => {
+const Credits = ({updateCredits,currentCredits}) => {
     const [data, setData] = useState(null); // data=null
     const [error, setError] = useState(null);// eroor=null
 
@@ -20,7 +20,13 @@ const Credits = ({updateCredits}) => {
             }
         };
 
-        yoinkCredits();
+        if(!currentCredits){
+            yoinkCredits();
+        }else if(currentCredits.length != 0){
+            setData(currentCredits);
+        }else if(currentCredits.length == 0){
+            yoinkCredits();
+        }
     }, []);
 
     useEffect(() => {

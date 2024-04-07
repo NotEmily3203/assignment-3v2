@@ -35,8 +35,8 @@ function App() {
         ...prevState,
         creditList: newCredits,
       }));
-      console.log(user);
     }
+
 
     const updateDebits = (newDebits) => {
       console.log(newDebits);
@@ -58,7 +58,7 @@ function App() {
         <Route path="/" element={<Home balance = {user.accountBalance}/>}/>
         <Route path="/login" element={<Login mockLogin={mockLogIn}/>}/>
         <Route path="/profile" element={<UserProfile userName={user.currentUser.userName} memberSince={user.currentUser.memberSince}/>}/>
-        <Route path="/credits" element={<Credits updateCredits={updateCredits}/>}/>
+        <Route path="/credits" element={<Credits updateCredits={updateCredits} currentCredits={user.creditList}/>}/>
         <Route path="/debits" element={<Debits updateDebits={updateDebits} currentDebits={user.debitList}/>}/>
       </Routes>
     </div>
