@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
-const Credits = ({updateCredits,currentCredits, error}) => {
+import AccountBalance from './AccountBalance';
+import './credit_debit.css'
+const Credits = ({updateCredits,currentCredits,debits, error, balance, updateBalance}) => {
     const [data, setData] = useState(currentCredits); // data=null
     const [newEntry, setNewEntry] = useState(null);
     useEffect(()=>{ //when currentCredits changes, we update data (local value)
@@ -60,18 +62,19 @@ const Credits = ({updateCredits,currentCredits, error}) => {
         return <div>Loading...</div>;
     } else {
         return (
-            <div>
+            <div className='page_layout'>
+                <div className='display'>
                 <h1>Credits</h1>
                 {data.map(entry => (
-                    <div key={entry.id}>
+                    <div key={entry.id} className='row'>
                         <div>
-                            <strong>Description:</strong> {entry.description}
+                            <p><strong>Description:</strong> {entry.description}</p>
                         </div>
                         <div>
-                            <strong>Date:</strong> {entry.date}
+                        <p><strong>Date:</strong> {entry.date}</p>
                         </div>
                         <div>
-                            <strong>Amount:</strong> {entry.amount}
+                        <p><strong>Amount:</strong> {entry.amount}</p>
                         </div>
                     </div>
                 ))}
@@ -86,6 +89,9 @@ const Credits = ({updateCredits,currentCredits, error}) => {
                     </div>
                     <button>Submit</button>
                 </form>
+                </div >
+                <div className='balance'><AccountBalance balance={balance} credits={currentCredits} debits={debits} updateBalance={updateBalance}/>
+</div>
             </div>
         );
     }
