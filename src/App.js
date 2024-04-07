@@ -48,7 +48,7 @@ function App() {
         <Route path="/" element={<Home balance = {user.accountBalance}/>}/>
         <Route path="/login" element={<Login mockLogin={mockLogIn}/>}/>
         <Route path="/profile" element={<UserProfile userName={user.currentUser.userName} memberSince={user.currentUser.memberSince}/>}/>
-        <Route path="/credits" element={<Credits updateCredits={updateCredits}/>}/>
+        <Route path="/credits" element={<Credits updateCredits={updateCredits} currentCredits={user.creditList}/>}/>
         <Route path="/debits" element={<Debits/>}/>
       </Routes>
     </div>
