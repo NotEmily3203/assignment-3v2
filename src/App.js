@@ -20,6 +20,26 @@ function App() {
       }
     }
   );
+  const [error, setError] = useState(null);// eroor=null
+  useEffect(() => {
+    const yoinkCredits = async () => {
+        try {
+            const response = await fetch('https://johnnylaicode.github.io/api/credits.json'); // call endpoint
+            if (!response.ok) {
+                throw Error('Connection Failed');
+            }
+            const jsonData = await response.json();
+            setUser((prevState)=>({
+              ...prevState,
+              creditList:jsonData,
+            }));
+        } catch (error) {
+            setError(error);
+        }
+    };
+
+    yoinkCredits();
+}, []);
 
   const [error1, setError1] = useState(null);
   useEffect(() => {
@@ -50,19 +70,25 @@ function App() {
     //const [credit, setCredit] = useState([]);
 
     const updateCredits = (newCredits) => {
-      console.log(newCredits);
       setUser((prevState) => ({
         ...prevState,
         creditList: newCredits,
       }));
-      console.log(user);
     }
+
 
     const updateDebits = (newDebits) => {
       console.log(newDebits);
       setUser((prevState) => ({
         ...prevState,
         debitList: newDebits,
+      }));
+    }
+
+    const updateBalance = (newBalance) => {
+      setUser((prevState) => ({
+        ...prevState,
+        accountBalance: newBalance,
       }));
     }
 
@@ -75,11 +101,11 @@ function App() {
     <div className="App">
       <Navbar/>
       <Routes>
-        <Route path="/" element={<Home balance = {user.accountBalance}/>}/>
+        <Route path="/" element={<Home balance = {user.accountBalance} credits={user.creditList} debits={user.debitList} updateBalance={updateBalance}/>}/>
         <Route path="/login" element={<Login mockLogin={mockLogIn}/>}/>
         <Route path="/profile" element={<UserProfile userName={user.currentUser.userName} memberSince={user.currentUser.memberSince}/>}/>
-        <Route path="/credits" element={<Credits updateCredits={updateCredits}/>}/>
         <Route path="/debits" element={<Debits updateDebits={updateDebits} currentDebits={user.debitList} error={error1}/>}/>
+        <Route path="/credits" element={<Credits updateCredits={updateCredits} currentCredits={user.creditList} error={error}/>}/>
       </Routes>
     </div>
   );
