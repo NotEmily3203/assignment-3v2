@@ -30,8 +30,8 @@ const Debits = ({updateDebits, currentDebits, error, credits, balance, updateBal
         const entry = {
             id: data.length + 1,
             description: desc,
-            amount: amt,
-            date: "now",
+            amount: +(amt.toFixed(2)),
+            date: new Date().toISOString(),
         };
         const newArray = [...data, entry];
         setNewEntry(newArray)
