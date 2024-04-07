@@ -20,6 +20,26 @@ function App() {
       }
     }
   );
+  const [error, setError] = useState(null);// eroor=null
+  useEffect(() => {
+    const yoinkCredits = async () => {
+        try {
+            const response = await fetch('https://johnnylaicode.github.io/api/credits.json'); // call endpoint
+            if (!response.ok) {
+                throw Error('Connection Failed');
+            }
+            const jsonData = await response.json();
+            setUser((prevState)=>({
+              ...prevState,
+              creditList:jsonData,
+            }));
+        } catch (error) {
+            setError(error);
+        }
+    };
+
+    yoinkCredits();
+}, []);
 
   const mockLogIn = (logInInfo) => {  // Update state's currentUser (userName) after "Log In" button is clicked
     setUser((prevState) => ({
@@ -30,7 +50,6 @@ function App() {
     //const [credit, setCredit] = useState([]);
 
     const updateCredits = (newCredits) => {
-      console.log(newCredits);
       setUser((prevState) => ({
         ...prevState,
         creditList: newCredits,
@@ -65,7 +84,7 @@ function App() {
         <Route path="/" element={<Home balance = {user.accountBalance} credits={user.creditList} debits={user.debitList} updateBalance={updateBalance}/>}/>
         <Route path="/login" element={<Login mockLogin={mockLogIn}/>}/>
         <Route path="/profile" element={<UserProfile userName={user.currentUser.userName} memberSince={user.currentUser.memberSince}/>}/>
-        <Route path="/credits" element={<Credits updateCredits={updateCredits} currentCredits={user.creditList}/>}/>
+        <Route path="/credits" element={<Credits updateCredits={updateCredits} currentCredits={user.creditList} error={error}/>}/>
         <Route path="/debits" element={<Debits updateDebits={updateDebits} currentDebits={user.debitList}/>}/>
       </Routes>
     </div>

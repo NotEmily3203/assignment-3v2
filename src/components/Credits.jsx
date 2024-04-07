@@ -1,38 +1,26 @@
 import React, {useState, useEffect} from 'react';
-const Credits = ({updateCredits,currentCredits}) => {
-    const [data, setData] = useState(null); // data=null
-    const [error, setError] = useState(null);// eroor=null
+const Credits = ({updateCredits,currentCredits, error}) => {
+    const [data, setData] = useState(currentCredits); // data=null
+    const [newEntry, setNewEntry] = useState(null);
+    useEffect(()=>{ //when currentCredits changes, we update data (local value)
+        if (currentCredits) {
+            setData(currentCredits);
+        } else {
+            setData([]);
+        }
+        console.log(currentCredits)
+    },[currentCredits]); //this updates the page
 
     const [desc, setDesc]=useState('');
     const [amt, setAmt]=useState(0);
 
-    useEffect(() => {
-        const yoinkCredits = async () => {
-            try {
-                const response = await fetch('https://johnnylaicode.github.io/api/credits.json'); // call endpoint
-                if (!response.ok) {
-                    throw Error('Connection Failed');
-                }
-                const jsonData = await response.json();
-                setData(jsonData);
-            } catch (error) {
-                setError(error);
-            }
-        };
+    
 
-        if(!currentCredits){
-            yoinkCredits();
-        }else if(currentCredits.length != 0){
-            setData(currentCredits);
-        }else if(currentCredits.length == 0){
-            yoinkCredits();
-        }
-    }, []);
-
-    useEffect(() => {
+    /*useEffect(() => {
+        
         let value = data;
         updateCredits(value);
-    }, [data]);
+    }, [data]);*/
     
 
     const handleDescChange = (e) => {
@@ -45,19 +33,25 @@ const Credits = ({updateCredits,currentCredits}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const newEntry = {
+        const entry = {
             id: data.length + 1,
             description: desc,
             amount: amt,
             date: "now",
         };
-        const newData = [...data, newEntry];
-        setData(newData)
+        const newArray = [...data, entry];
+        setNewEntry(newArray);
         //console.log(data);
         setDesc('');
         setAmt('');
-        
     }
+
+    useEffect(()=>{ //if new entry, then update data in APP.js
+        //;
+        if(newEntry){
+            updateCredits(newEntry);
+        }
+    },[newEntry]);
    
     
     if (error) {
